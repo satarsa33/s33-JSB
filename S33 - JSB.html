@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="light dark">
+<title>S33 - JSB</title>
+<style>
+:root{--bg:#f6f6f3;--fg:#1d1d1b;--f2:#6a6963;--ln:rgba(0,0,0,.14);--cd:#e8e8e3;--rt:#dcdcd5;--nt:#6f6e68;--on:#E1F5EE;--onf:#085041;box-sizing:border-box;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171716;--fg:#ecece7;--f2:#9f9e97;--ln:rgba(255,255,255,.18);--cd:#262624;--rt:#30302d;--nt:#8d8c85}}
+:root[data-theme="dark"]{--bg:#171716;--fg:#ecece7;--f2:#9f9e97;--ln:rgba(255,255,255,.18);--cd:#262624;--rt:#30302d;--nt:#8d8c85}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font:14px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+button,select{font:inherit;color:var(--fg);background:var(--cd);border:.5px solid var(--ln);border-radius:8px;min-height:32px;padding:0 8px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button.on{background:var(--on);color:var(--onf);border-color:#1D9E75}
+#app{position:relative;height:100%;min-height:300px;display:flex;gap:8px;padding:8px}
+#L{width:56px;flex:none;display:flex;flex-direction:column;justify-content:space-between;align-items:center}
+#pl{width:44px;height:44px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
+.bb{text-align:center;line-height:1.1}.bb b{font-size:16px;font-weight:500;display:block}.bb small{color:var(--f2);font-size:11px;display:block;margin-bottom:4px}
+.bb div{display:flex;gap:2px}.bb button{min-width:26px;padding:0}
+#sc{width:56px;height:48px;padding:0;line-height:1.15}#sc b{font-size:15px;font-weight:500;display:block}#sc small{font-size:11px;color:var(--f2)}
+#M{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#mm{position:relative;height:12px;display:grid;grid-template-columns:repeat(16,1fr);gap:2px;flex:none;touch-action:none}
+.ms{border-radius:3px;background:var(--cd)}
+#win{position:absolute;top:-2px;bottom:-2px;left:0;border:2px solid var(--f2);border-radius:5px;pointer-events:none}
+#vp{position:relative;flex:1;overflow:hidden;touch-action:none}
+#grid{position:absolute;top:0;left:0;bottom:0;display:grid;grid-template-rows:repeat(8,minmax(0,1fr));gap:2px}
+.c{border-radius:4px;background:var(--cd)}.c.rt{background:var(--rt)}
+.ph{position:absolute;top:0;bottom:0;pointer-events:none;border-radius:4px}
+#el,#er{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:4px;pointer-events:none}
+#el{left:3px}#er{right:3px}
+.ed{display:block;width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 2px var(--bg)}
+#R{width:176px;flex:none;display:flex;flex-direction:column}
+#ch{flex:1;display:flex;flex-direction:column;gap:6px}
+.ch{flex:1;display:flex;align-items:center;gap:10px;text-align:left;padding:0 12px}
+.ch small{display:block;color:var(--f2);font-size:11px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+#pn{flex:1;display:flex;flex-direction:column;gap:2px;border-left:.5px solid var(--ln);padding-left:8px;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;min-height:34px}
+#pd{display:flex;gap:6px}
+.dd{width:22px;height:22px;min-height:0;padding:0;border:0;border-radius:50%}
+.dd.cur{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--fg)}
+#px{width:32px;padding:0;font-size:18px}
+.rw{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:34px;font-size:12px;color:var(--f2)}
+.st{display:flex;align-items:center;gap:4px;color:var(--fg)}.st button{width:30px;padding:0}.st b{min-width:20px;text-align:center;font-weight:500}
+.sg{display:flex;gap:2px}.sg button{min-width:26px;min-height:30px;padding:0}
+select{width:84px;min-height:30px}
+input[type=range]{width:84px}
+input[type=checkbox]{width:20px;height:20px;margin:0}
+#cl{min-height:28px;font-size:12px;margin-top:2px}
+#sh{position:absolute;inset:0;z-index:5;background:var(--bg);display:flex;flex-direction:column;gap:12px;padding:12px 16px}
+#sh .hd{min-height:30px;font-weight:500}
+#tn,#sl{display:flex;flex-wrap:wrap;gap:6px}
+#tn button{flex:1;min-width:44px}
+#sl button{min-height:38px}
+#rot{display:none;position:absolute;inset:0;z-index:9;background:var(--bg);align-items:center;justify-content:center;text-align:center;padding:24px;font-size:16px}
+@media (orientation:portrait){#rot{display:flex}}
+</style>
+</head>
+<body>
+<div id="app">
+ <div id="L">
+  <button id="pl" aria-label="Play e pausa"></button>
+  <div class="bb"><b id="bv"></b><small>bpm</small><div><button id="bm" aria-label="Rallenta">−</button><button id="bp" aria-label="Accelera">+</button></div></div>
+  <button id="sc" aria-label="Scegli tonalità e scala"><b id="s1"></b><small id="s2"></small></button>
+ </div>
+ <div id="M">
+  <div id="mm"><div id="win"></div></div>
+  <div id="vp"><div id="grid"></div><div id="el"></div><div id="er"></div></div>
+ </div>
+ <div id="R">
+  <div id="ch"></div>
+  <div id="pn" hidden>
+   <div class="hd"><div id="pd"></div><button id="px" aria-label="Chiudi pannello">×</button></div>
+   <div class="rw"><span>Lunghezza</span><div class="st"><button id="lm" aria-label="Meno">−</button><b id="lv"></b><button id="lp" aria-label="Più">+</button></div></div>
+   <div class="rw"><span>Velocità</span><div class="sg" id="sg"></div></div>
+   <div class="rw"><span>Direzione</span><div class="sg" id="dg"></div></div>
+   <div class="rw"><span>Voce</span><select id="vc"><option value="0">Pizzico</option><option value="1">Morbida</option><option value="2">Ottava giù</option></select></div>
+   <div class="rw"><span>Volume</span><input type="range" id="vl" min="0" max="100"></div>
+   <div class="rw"><span>Mano propria</span><input type="checkbox" id="ow"></div>
+   <button id="cl" hidden>Svuota note</button>
+  </div>
+ </div>
+ <div id="sh" hidden>
+  <div class="hd"><span>Tonalità e scala</span><button id="sx" style="width:32px;padding:0;font-size:18px" aria-label="Chiudi">×</button></div>
+  <div id="tn"></div>
+  <div id="sl"></div>
+ </div>
+ <div id="rot">Ruota il telefono in orizzontale per usare il sequencer.</div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const E=(t,c,p,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;if(p)p.appendChild(e);return e};
+const PC=['#7F77DD','#1D9E75','#D85A30','#D4537E'];
+const TN=['Do','Do#','Re','Re#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'];
+const SC=[['Maggiore','Magg.',[0,2,4,5,7,9,11]],['Minore','Min.',[0,2,3,5,7,8,10]],['Minore armonica','Arm.',[0,2,3,5,7,8,11]],['Minore melodica','Mel.',[0,2,3,5,7,9,11]],['Pentatonica maggiore','P.mag.',[0,2,4,7,9]],['Pentatonica minore','P.min.',[0,3,5,7,10]],['Blues','Blues',[0,3,5,6,7,10]],['Dorica','Dor.',[0,2,3,5,7,9,10]],['Frigia','Fri.',[0,1,3,5,7,8,10]],['Lidia','Lid.',[0,2,4,6,7,9,11]],['Misolidia','Miso.',[0,2,4,5,7,9,10]],['Locria','Loc.',[0,1,3,5,6,8,10]],['Toni interi','Toni',[0,2,4,6,8,10]],['Diminuita','Dim.',[0,2,3,5,6,8,9,11]],['Cromatica','Crom.',[0,1,2,3,4,5,6,7,8,9,10,11]]];
+const SPV=[.5,1,2,3],SPL=['½','1','2','3'],DL=['→','←','↔','?'],DN=['Avanti','Indietro','Pendolo','Casuale'];
+const Z=()=>Array.from({length:8},()=>Array(16).fill(0));
+const def=()=>{const sh=Z();[[1,7],[2,11],[3,1],[3,15],[4,4],[4,9],[5,0],[5,6],[5,12],[6,3],[6,10],[6,14],[7,0],[7,8]].forEach(([r,c])=>sh[r][c]=1);return{bpm:112,tn:0,sc:0,sh,P:[[16,1,0],[12,1,1],[8,.5,0],[5,1,2]].map(([len,sp,voice])=>({len,sp,dir:0,voice,vol:.8,own:0,init:0,ow:Z()}))}};
+let S=null;try{S=JSON.parse(localStorage.getItem('s4p'))}catch(e){}
+if(!S||!S.P||S.P.length!==4)S=def();
+S.sel=-1;
+const save=()=>{try{localStorage.setItem('s4p',JSON.stringify(S))}catch(e){}};
+const pos=[0,0,0,0];
+let ctx,mst,playing=false,timer=0,vq=[],dirty=1,VIS=7,cw=40,off=0;
+const H=[0,1,2,3].map(()=>({nt:0,i:0}));
+
+function ensure(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();mst=ctx.createDynamicsCompressor();const g=ctx.createGain();g.gain.value=.8;mst.connect(g);g.connect(ctx.destination)}if(ctx.state!=='running')ctx.resume()}
+const posOf=(p,i)=>{const n=p.len;if(p.dir===0)return i%n;if(p.dir===1)return n-1-i%n;if(p.dir===2){const q=Math.max(1,2*n-2),m=i%q;return m<n?m:q-m}return Math.floor(Math.random()*n)};
+function freq(r){const iv=SC[S.sc][2],d=7-r;return 440*Math.pow(2,(48+S.tn+12*Math.floor(d/iv.length)+iv[d%iv.length]-69)/12)}
+function tone(f,p,t){const o=ctx.createOscillator(),g=ctx.createGain(),v=.15*p.vol,dur=[.45,.95,.6][p.voice],att=[.004,.04,.006][p.voice];
+o.type=['triangle','sine','triangle'][p.voice];o.frequency.value=p.voice===2?f/2:f;
+g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+att);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+o.connect(g);g.connect(mst);o.start(t);o.stop(t+dur+.05)}
+function sched(){const now=ctx.currentTime,b=60/S.bpm/2;S.P.forEach((p,k)=>{const h=H[k],L=p.own?p.ow:S.sh;while(h.nt<now+.12){const c=posOf(p,h.i);for(let r=0;r<8;r++)if(L[r][c])tone(freq(r),p,h.nt);vq.push({t:h.nt,k,pos:c});h.i++;h.nt+=b/p.sp}})}
+function icon(){$('#pl').innerHTML=playing?'<svg width="18" height="18" viewBox="0 0 18 18"><rect x="3" y="2" width="4" height="14" rx="1" fill="currentColor"/><rect x="11" y="2" width="4" height="14" rx="1" fill="currentColor"/></svg>':'<svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>'}
+function toggle(){if(!playing){ensure();const t0=ctx.currentTime+.06;H.forEach(h=>{h.nt=t0;h.i=0});vq=[];timer=setInterval(sched,25);playing=true}else{clearInterval(timer);playing=false;vq=[]}icon();dirty=1}
+
+const grid=$('#grid'),vp=$('#vp'),mm=$('#mm'),win=$('#win'),EL=$('#el'),ER=$('#er');
+const cells=[];
+for(let r=0;r<8;r++){cells[r]=[];for(let c=0;c<16;c++){const d=E('div','c',grid);d.dataset.r=r;d.dataset.c=c;cells[r][c]=d}}
+const phs=PC.map(c=>{const d=E('div','ph',grid);d.style.background=c;return d});
+const ms=[];for(let c=0;c<16;c++){const s=E('div','ms');mm.insertBefore(s,win);ms.push(s)}
+function setOff(o){off=Math.max(0,Math.min(16-VIS,o));grid.style.transform='translateX('+(-off*cw)+'px)';win.style.left='calc('+off+'*100%/16)';dirty=1}
+function layout(){const w=vp.clientWidth;if(!w)return;VIS=Math.min(16,Math.max(6,Math.floor(w/34)));cw=w/VIS;grid.style.gridTemplateColumns='repeat(16,'+(cw-2)+'px)';grid.style.width=(16*cw)+'px';phs.forEach(p=>p.style.width=(cw-2)+'px');mm.style.visibility=VIS<16?'visible':'hidden';win.style.width='calc('+VIS+'*100%/16)';setOff(off)}
+const edot=k=>'<i class="ed" style="background:'+PC[k]+'"></i>';
+function draw(){
+const sel=S.sel,sp=sel>=0?S.P[sel]:null,ov=sp&&sp.own,n=SC[S.sc][2].length;
+for(let r=0;r<8;r++){const rt=(7-r)%n===0;for(let c=0;c<16;c++){const d=cells[r][c];let bg='',op=1;
+if(ov){if(sp.ow[r][c]){bg=PC[sel];op=playing&&pos[sel]===c?1:.7}else if(S.sh[r][c]){bg='var(--nt)';op=.3}}
+else if(S.sh[r][c]){let h=-1;if(playing)for(let k=0;k<4;k++)if(!S.P[k].own&&pos[k]===c){h=k;break}bg=h>=0?PC[h]:'var(--nt)';op=h>=0?1:.8}
+if(sp&&c>=sp.len)op*=.4;
+d.className='c'+(rt?' rt':'');d.style.background=bg;d.style.opacity=op}}
+phs.forEach((p,k)=>{p.style.left=(pos[k]*cw)+'px';p.style.opacity=sel<0?.2:(k===sel?.3:.12)});
+for(let c=0;c<16;c++){let bg='var(--cd)',op=1;if(sp){if(c<sp.len){bg=PC[sel];op=pos[sel]===c?1:.45}}else{const k=pos.indexOf(c);if(k>-1)bg=PC[k]}ms[c].style.background=bg;ms[c].style.opacity=op}
+let l='',r2='';if(VIS<16)pos.forEach((p,k)=>{if(p<off)l+=edot(k);else if(p>=off+VIS)r2+=edot(k)});EL.innerHTML=l;ER.innerHTML=r2}
+function frame(){if(ctx&&playing){const now=ctx.currentTime,keep=[];for(const e of vq){if(e.t<=now){pos[e.k]=e.pos;dirty=1}else keep.push(e)}vq=keep}if(dirty){draw();dirty=0}requestAnimationFrame(frame)}
+
+let paint=null;
+const L=()=>{const p=S.sel>=0?S.P[S.sel]:null;return p&&p.own?p.ow:S.sh};
+const cellAt=(x,y)=>{const e=document.elementFromPoint(x,y);return e&&e.classList.contains('c')?e:null};
+const setC=e=>{if(!e)return;const l=L(),r=+e.dataset.r,c=+e.dataset.c;if(l[r][c]!==paint){l[r][c]=paint;dirty=1}};
+grid.onpointerdown=e=>{const t=cellAt(e.clientX,e.clientY);if(!t)return;paint=L()[+t.dataset.r][+t.dataset.c]?0:1;grid.setPointerCapture(e.pointerId);setC(t)};
+grid.onpointermove=e=>{if(paint!==null)setC(cellAt(e.clientX,e.clientY))};
+const endP=()=>{if(paint!==null){paint=null;save()}};
+grid.onpointerup=endP;grid.onpointercancel=endP;
+let mdrag=false;
+const mmMove=e=>{const b=mm.getBoundingClientRect();setOff(Math.round((e.clientX-b.left)/b.width*16-VIS/2))};
+mm.onpointerdown=e=>{mdrag=true;mm.setPointerCapture(e.pointerId);mmMove(e)};
+mm.onpointermove=e=>{if(mdrag)mmMove(e)};
+mm.onpointerup=()=>{mdrag=false};
+
+SPL.forEach((l,i)=>{const b=E('button','',$('#sg'),l);b.onclick=()=>{S.P[S.sel].sp=SPV[i];save();ui()}});
+DL.forEach((l,i)=>{const b=E('button','',$('#dg'),l);b.setAttribute('aria-label',DN[i]);b.onclick=()=>{S.P[S.sel].dir=i;save();ui()}});
+const tb=TN.map((n,i)=>{const b=E('button','',$('#tn'),n);b.onclick=()=>{S.tn=i;save();ui()};return b});
+const sb=SC.map((s,i)=>{const b=E('button','',$('#sl'),s[0]);b.onclick=()=>{S.sc=i;save();ui()};return b});
+function ui(){
+const p=S.sel>=0?S.P[S.sel]:null;
+$('#pn').hidden=!p;$('#ch').hidden=!!p;
+$('#bv').textContent=S.bpm;$('#s1').textContent=TN[S.tn];$('#s2').textContent=SC[S.sc][1];
+tb.forEach((b,i)=>b.classList.toggle('on',i===S.tn));sb.forEach((b,i)=>b.classList.toggle('on',i===S.sc));
+const ch=$('#ch');ch.innerHTML='';
+S.P.forEach((q,k)=>{const b=E('button','ch',ch,'<span class="dot" style="background:'+PC[k]+'"></span><span>P'+(k+1)+'<small>'+q.len+' · ×'+SPL[SPV.indexOf(q.sp)]+(q.own?' · mano':'')+'</small></span>');b.onclick=()=>{S.sel=k;ui()}});
+if(p){const pd=$('#pd');pd.innerHTML='';PC.forEach((c,k)=>{const b=E('button','dd',pd);b.setAttribute('aria-label','Playhead '+(k+1));b.style.background=c;if(k===S.sel)b.classList.add('cur');b.onclick=()=>{S.sel=k;ui()}});
+$('#lv').textContent=p.len;
+$('#sg').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',SPV[i]===p.sp));
+$('#dg').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===p.dir));
+$('#vc').value=p.voice;$('#vl').value=Math.round(p.vol*100);$('#ow').checked=!!p.own;$('#cl').hidden=!p.own}
+dirty=1}
+$('#lm').onclick=()=>{const p=S.P[S.sel];p.len=Math.max(2,p.len-1);save();ui()};
+$('#lp').onclick=()=>{const p=S.P[S.sel];p.len=Math.min(16,p.len+1);save();ui()};
+$('#vc').onchange=e=>{S.P[S.sel].voice=+e.target.value;save()};
+$('#vl').oninput=e=>{S.P[S.sel].vol=e.target.value/100;save()};
+$('#ow').onchange=e=>{const p=S.P[S.sel];p.own=e.target.checked?1:0;if(p.own&&!p.init){p.ow=S.sh.map(r=>r.slice());p.init=1}save();ui()};
+$('#cl').onclick=()=>{S.P[S.sel].ow=Z();save();dirty=1};
+$('#px').onclick=()=>{S.sel=-1;ui()};
+$('#bm').onclick=()=>{S.bpm=Math.max(40,S.bpm-4);save();ui()};
+$('#bp').onclick=()=>{S.bpm=Math.min(200,S.bpm+4);save();ui()};
+$('#sc').onclick=()=>{$('#sh').hidden=false};
+$('#sx').onclick=()=>{$('#sh').hidden=true};
+$('#pl').onclick=toggle;
+new ResizeObserver(layout).observe(vp);
+layout();ui();icon();requestAnimationFrame(frame);
+</script>
+</body>
+</html>

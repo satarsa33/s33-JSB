@@ -37,16 +37,16 @@ button.on{background:var(--on);color:var(--onf);border-color:#1D9E75}
 .ch{flex:1;display:flex;align-items:center;gap:10px;text-align:left;padding:0 12px}
 .ch small{display:block;color:var(--f2);font-size:11px}
 .dot{width:14px;height:14px;border-radius:50%;flex:none}
-#pn{flex:1;display:flex;flex-direction:column;gap:2px;border-left:.5px solid var(--ln);padding-left:8px;overflow:hidden}
+#pn{flex:1;display:flex;flex-direction:column;gap:1px;border-left:.5px solid var(--ln);padding-left:8px;overflow:hidden}
 .hd{display:flex;align-items:center;justify-content:space-between;min-height:30px}
 #pd{display:flex;gap:6px}
 .dd{width:20px;height:20px;min-height:0;padding:0;border:0;border-radius:50%}
 .dd.cur{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--fg)}
-#px{width:30px;padding:0;font-size:18px}.ch2{flex:1;display:flex;gap:6px}.pb{width:34px;padding:0;display:flex;align-items:center;justify-content:center;flex:none}#hb{display:flex;gap:4px}.kb{flex:1;display:flex;flex-direction:column;align-items:center;touch-action:none;cursor:ns-resize}.kb small{font-size:11px;color:var(--f2);line-height:1.1}#kr{display:flex;gap:2px;padding:2px 0}.st button{height:28px;min-height:28px}
-.rw{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:32px;font-size:12px;color:var(--f2)}
+#px{width:30px;padding:0;font-size:18px}.ch2{flex:1;display:flex;gap:6px}.pb{width:34px;padding:0;display:flex;align-items:center;justify-content:center;flex:none}#hb{display:flex;gap:4px}.st2{display:flex;align-items:center;gap:2px;color:var(--fg)}.st2 button{width:24px;height:28px;min-height:28px;padding:0}.st2 b{min-width:36px;text-align:center;font-weight:500;font-size:12px}#pb2,#mb2{min-height:28px;height:28px}.kb svg{width:36px;height:36px}.lg{display:flex;flex-direction:column;align-items:center;gap:6px}#mu{width:56px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px}.mt{background:#FCEBEB!important;color:#791F1F!important;border-color:#E24B4A!important}.bc{display:flex;flex-direction:column;gap:4px;flex:none}.bc .pb{flex:1;height:auto;min-height:0}.kb{flex:1;display:flex;flex-direction:column;align-items:center;touch-action:none;cursor:ns-resize}.kb small{font-size:11px;color:var(--f2);line-height:1.1}#kr{display:flex;gap:2px;padding:2px 0}.st button{height:28px;min-height:28px}
+.rw{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:28px;font-size:12px;color:var(--f2)}
 .st{display:flex;align-items:center;gap:4px;color:var(--fg)}.st button{width:30px;padding:0}.st b{min-width:20px;text-align:center;font-weight:500}
-.sg{display:flex;gap:2px}.sg button{min-width:26px;min-height:30px;padding:0}
-select{width:100px;min-height:30px}
+.sg{display:flex;gap:2px}.sg button{min-width:26px;min-height:28px;padding:0}
+select{width:100px;min-height:28px}
 input[type=range]{width:84px}
 input[type=checkbox]{width:20px;height:20px;margin:0}
 #cl{min-height:28px;font-size:12px;margin-top:2px}
@@ -62,7 +62,7 @@ input[type=checkbox]{width:20px;height:20px;margin:0}
 <body>
 <div id="app">
  <div id="L">
-  <button id="pl" aria-label="Play e pausa"></button>
+  <div class="lg"><button id="pl" aria-label="Play e pausa"></button><button id="mu" aria-label="Mute generale"></button></div>
   <div class="bb"><b id="bv"></b><small>bpm</small><div><button id="bm" aria-label="Rallenta">−</button><button id="bp" aria-label="Accelera">+</button></div></div>
   <button id="sc" aria-label="Scegli tonalità e scala"><b id="s1"></b><small id="s2"></small></button>
  </div>
@@ -73,11 +73,13 @@ input[type=checkbox]{width:20px;height:20px;margin:0}
  <div id="R">
   <div id="ch"></div>
   <div id="pn" hidden>
-   <div class="hd"><div id="pd"></div><div id="hb"><button id="pb2" class="pb" style="width:30px" aria-label="Play playhead"></button><button id="px" aria-label="Chiudi pannello">×</button></div></div>
+   <div class="hd"><div id="pd"></div><button id="px" aria-label="Chiudi pannello">×</button></div>
+   <div class="rw"><button id="pb2" class="pb" style="flex:1;width:auto" aria-label="Play playhead"></button><button id="mb2" class="pb" style="flex:1;width:auto" aria-label="Mute playhead"></button></div>
    <div class="rw"><span>Lunghezza</span><div class="st"><button id="lm" aria-label="Meno">−</button><b id="lv"></b><button id="lp" aria-label="Più">+</button></div></div>
    <div class="rw"><span>Velocità</span><div class="sg" id="sg"></div></div>
    <div class="rw"><span>Direzione</span><div class="sg" id="dg"></div></div>
    <div class="rw"><span>Voce</span><select id="vc"></select></div>
+   <div class="rw"><div class="st2"><button id="om" aria-label="Ottava giù">−</button><b id="ov" aria-label="Ottava"></b><button id="op" aria-label="Ottava su">+</button></div><div class="st2"><button id="pm" aria-label="Pitch giù">−</button><b id="pv" aria-label="Pitch in semitoni"></b><button id="pp2" aria-label="Pitch su">+</button></div></div>
    <div id="kr"><div id="kv"></div><div id="kre"></div><div id="kd"></div></div>
    <div class="rw"><span>Mano propria</span><input type="checkbox" id="ow"></div>
    <button id="cl">Svuota note</button>
@@ -102,10 +104,10 @@ const Z=()=>Array.from({length:8},()=>Array(16).fill(0));
 const def=()=>{const sh=Z();[[1,7],[2,11],[3,1],[3,15],[4,4],[4,9],[5,0],[5,6],[5,12],[6,3],[6,10],[6,14],[7,0],[7,8]].forEach(([r,c])=>sh[r][c]=1);return{bpm:112,tn:0,sc:0,sh,P:[[16,1,0],[12,1,1],[8,.5,0],[5,1,2]].map(([len,sp,voice])=>({len,sp,dir:0,voice,vol:.8,own:0,init:0,ow:Z()}))}};
 let S=null;try{S=JSON.parse(localStorage.getItem('s4p'))}catch(e){}
 if(!S||!S.P||S.P.length!==4)S=def();
-S.sel=-1;S.P.forEach(p=>{if(p.rev==null)p.rev=.2;if(p.dly==null)p.dly=0});
+S.sel=-1;S.P.forEach(p=>{if(p.rev==null)p.rev=.2;if(p.dly==null)p.dly=0;if(p.oct==null)p.oct=0;if(p.pit==null)p.pit=0;p.mute=0});S.mute=0;
 const save=()=>{try{localStorage.setItem('s4p',JSON.stringify(S))}catch(e){}};
 const xs=[0,0,0,0],col=[0,0,0,0],cur=[null,null,null,null];let lastE='';
-let ctx,mst,playing=false,timer=0,vq=[],dirty=1,VIS=7,cw=40,off=0,t0=null,OUT,dIn,dl,rIn;const run=[0,0,0,0],bus=[],ds=[],rs=[];
+let ctx,mst,playing=false,timer=0,vq=[],dirty=1,VIS=7,cw=40,off=0,t0=null,OUT,dIn,dl,rIn,mg;const run=[0,0,0,0],bus=[],ds=[],rs=[];
 const ICP='<svg width="14" height="14" viewBox="0 0 18 18"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>',ICS='<svg width="14" height="14" viewBox="0 0 18 18"><rect x="3" y="3" width="12" height="12" rx="2" fill="currentColor"/></svg>';
 const H=[0,1,2,3].map(()=>({nt:0,i:0}));
 
@@ -118,8 +120,12 @@ for(let c=0;c<2;c++){const a=ib.getChannelData(c);for(let i=0;i<n;i++)a[i]=(Math
 cv.buffer=ib;ro.gain.value=.7;rIn.connect(cv);cv.connect(ro);ro.connect(mst);
 for(let k=0;k<4;k++){bus[k]=mk();ds[k]=mk();rs[k]=mk();bus[k].connect(mst);bus[k].connect(ds[k]);bus[k].connect(rs[k]);ds[k].connect(dIn);rs[k].connect(rIn)}
 setSends()}
+const ICM='<svg width="16" height="16" viewBox="0 0 18 18"><path d="M2 7h3l4-3.5v11L5 11H2z" fill="currentColor"/><path d="M12 6.5a4 4 0 010 5M14 4.5a7 7 0 010 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',ICMX='<svg width="16" height="16" viewBox="0 0 18 18"><path d="M2 7h3l4-3.5v11L5 11H2z" fill="currentColor"/><path d="M12 6.5l5 5M17 6.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+function applyMute(){if(!ctx)return;const t=ctx.currentTime;mg.gain.setTargetAtTime(S.mute?0:.8,t,.02);bus.forEach((b,k)=>b.gain.setTargetAtTime(S.P[k].mute?0:1,t,.02))}
+const mutePK=k=>{S.P[k].mute=S.P[k].mute?0:1;applyMute();ui()};
+const muteAll=()=>{S.mute=S.mute?0:1;applyMute();ui()};
 function dbg(m){const e=$('#dbg');e.textContent=m+' (tocca per chiudere)';e.hidden=false}
-function ensure(){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();ctx.onstatechange=()=>{if(ctx.state!=='running')dbg('Audio in stato: '+ctx.state)};mst=ctx.createDynamicsCompressor();const g=ctx.createGain();g.gain.value=.8;mst.connect(g);g.connect(ctx.destination);fx()}if(ctx.state!=='running'){const r=ctx.resume();if(r&&r.catch)r.catch(e=>dbg('Audio non avviabile: '+(e&&e.message||e)))}}
+function ensure(){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();ctx.onstatechange=()=>{if(ctx.state!=='running')dbg('Audio in stato: '+ctx.state)};mst=ctx.createDynamicsCompressor();mg=ctx.createGain();mg.gain.value=S.mute?0:.8;mst.connect(mg);mg.connect(ctx.destination);fx();applyMute()}if(ctx.state!=='running'){const r=ctx.resume();if(r&&r.catch)r.catch(e=>dbg('Audio non avviabile: '+(e&&e.message||e)))}}
 const posOf=(p,i)=>{const n=p.len;if(p.dir===0)return i%n;if(p.dir===1)return n-1-i%n;if(p.dir===2){const q=Math.max(1,2*n-2),m=i%q;return m<n?m:q-m}return Math.floor(Math.random()*n)};
 function freq(r){const iv=SC[S.sc][2],d=7-r;return 440*Math.pow(2,(48+S.tn+12*Math.floor(d/iv.length)+iv[d%iv.length]-69)/12)}
 function basic(f,p,t,d){const o=ctx.createOscillator(),g=ctx.createGain(),v=.15*p.vol,a=[.004,.04,.006][p.voice];
@@ -153,7 +159,7 @@ h.type='highpass';h.frequency.value=4500;b.type='bandpass';b.frequency.value=650
 g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*1.1,t+Math.min(.02,len/3));g.gain.exponentialRampToValueAtTime(.0001,t+len);
 s.connect(h);h.connect(b);b.connect(g);g.connect(OUT);s.start(t,Math.random()*.5);s.stop(t+len+.02)}
 function tone(f,p,t,d){OUT=bus[S.P.indexOf(p)];const v=.15*p.vol,V=p.voice;if(V<3)return basic(f,p,t,d);if(V===3)return piano(f,t,d,v);if(V===4)return clav(f,t,d,v);if(V===5)return stick(f,t,v);return shake(f,t,d,v)}
-function sched(){const now=ctx.currentTime,b=60/S.bpm/2;dl.delayTime.setTargetAtTime(45/S.bpm,now,.05);S.P.forEach((p,k)=>{if(!run[k])return;const h=H[k],L=p.own?p.ow:S.sh;while(h.nt<now+.12){const c=(p.dir===3&&h.pend!=null&&h.pend<p.len)?h.pend:posOf(p,h.i),c2=posOf(p,h.i+1),dt=b/p.sp;h.pend=c2;for(let r=0;r<8;r++)if(L[r][c]>0)try{tone(freq(r),p,h.nt,L[r][c]*dt)}catch(err){dbg('Audio: '+(err&&err.message||err))};vq.push({t:h.nt,k,pos:c,d:p.dir===0?1:p.dir===1?-1:c2-c,w:p.dir<2,len:p.len,dt});h.i++;h.nt+=dt}})}
+function sched(){const now=ctx.currentTime,b=60/S.bpm/2;dl.delayTime.setTargetAtTime(45/S.bpm,now,.05);S.P.forEach((p,k)=>{if(!run[k])return;const h=H[k],L=p.own?p.ow:S.sh;while(h.nt<now+.12){const c=(p.dir===3&&h.pend!=null&&h.pend<p.len)?h.pend:posOf(p,h.i),c2=posOf(p,h.i+1),dt=b/p.sp;h.pend=c2;const sh=Math.pow(2,(p.oct||0)+(p.pit||0)/12);for(let r=0;r<8;r++)if(L[r][c]>0)try{tone(Math.max(30,Math.min(6000,freq(r)*sh)),p,h.nt,L[r][c]*dt)}catch(err){dbg('Audio: '+(err&&err.message||err))};vq.push({t:h.nt,k,pos:c,d:p.dir===0?1:p.dir===1?-1:c2-c,w:p.dir<2,len:p.len,dt});h.i++;h.nt+=dt}})}
 const anyRun=()=>run.some(x=>x);
 function icon(){$('#pl').innerHTML=anyRun()?'<svg width="18" height="18" viewBox="0 0 18 18"><rect x="3" y="3" width="12" height="12" rx="2" fill="currentColor"/></svg>':'<svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>'}
 function after(){playing=anyRun();icon();ui()}
@@ -218,14 +224,18 @@ const p=S.sel>=0?S.P[S.sel]:null;
 $('#pn').hidden=!p;$('#ch').hidden=!!p;
 $('#bv').textContent=S.bpm;$('#s1').textContent=TN[S.tn];$('#s2').textContent=SC[S.sc][1];
 tb.forEach((b,i)=>b.classList.toggle('on',i===S.tn));sb.forEach((b,i)=>b.classList.toggle('on',i===S.sc));
+$('#mu').innerHTML=(S.mute?ICMX:ICM)+'<span>Mute</span>';$('#mu').classList.toggle('mt',!!S.mute);
 const ch=$('#ch');ch.innerHTML='';
-S.P.forEach((q,k)=>{const w=E('div','ch2',ch);const b=E('button','ch',w,'<span class="dot" style="background:'+PC[k]+'"></span><span>P'+(k+1)+'<small>'+q.len+' · ×'+SPL[SPV.indexOf(q.sp)]+(q.own?' · mano':'')+'</small></span>');b.onclick=()=>{S.sel=k;ui()};const pb=E('button','pb',w,run[k]?ICS:ICP);pb.setAttribute('aria-label','Play playhead '+(k+1));if(run[k]){pb.style.background=PC[k];pb.style.color='#fff';pb.style.borderColor=PC[k]}pb.onclick=()=>toggleK(k)});
+S.P.forEach((q,k)=>{const w=E('div','ch2',ch);const b=E('button','ch',w,'<span class="dot" style="background:'+PC[k]+'"></span><span>P'+(k+1)+'<small>'+q.len+' · ×'+SPL[SPV.indexOf(q.sp)]+(q.own?' · mano':'')+'</small></span>');b.onclick=()=>{S.sel=k;ui()};const bc=E('div','bc',w);const pb=E('button','pb',bc,run[k]?ICS:ICP);pb.setAttribute('aria-label','Play playhead '+(k+1));if(run[k]){pb.style.background=PC[k];pb.style.color='#fff';pb.style.borderColor=PC[k]}pb.onclick=()=>toggleK(k);const mb=E('button','pb',bc,q.mute?ICMX:ICM);mb.setAttribute('aria-label','Mute playhead '+(k+1));mb.classList.toggle('mt',!!q.mute);mb.onclick=()=>mutePK(k)});
 if(p){const pd=$('#pd');pd.innerHTML='';PC.forEach((c,k)=>{const b=E('button','dd',pd);b.setAttribute('aria-label','Playhead '+(k+1));b.style.background=c;if(k===S.sel)b.classList.add('cur');b.onclick=()=>{S.sel=k;ui()}});
-$('#lv').textContent=p.len;const q2=$('#pb2');q2.innerHTML=run[S.sel]?ICS:ICP;q2.style.background=run[S.sel]?PC[S.sel]:'';q2.style.color=run[S.sel]?'#fff':'';q2.style.borderColor=run[S.sel]?PC[S.sel]:'';
+$('#lv').textContent=p.len;const fm=(l,v)=>l+' '+(v>0?'+'+v:v<0?'−'+(-v):'0');$('#ov').textContent=fm('Ott',p.oct);$('#pv').textContent=fm('Pit',p.pit);const q2=$('#pb2'),on=run[S.sel];q2.innerHTML=(on?ICS:ICP)+'<span style="margin-left:6px">'+(on?'Stop':'Play')+'</span>';q2.style.background=on?PC[S.sel]:'';q2.style.color=on?'#fff':'';q2.style.borderColor=on?PC[S.sel]:'';const m2=$('#mb2');m2.innerHTML=(p.mute?ICMX:ICM)+'<span style="margin-left:6px">Mute</span>';m2.classList.toggle('mt',!!p.mute);
 $('#sg').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',SPV[i]===p.sp));
 $('#dg').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===p.dir));
 $('#vc').value=p.voice;KN.forEach(k=>k.upd());$('#ow').checked=!!p.own;clArm=0;clearTimeout(clT);$('#cl').textContent=p.own?'Svuota note':'Svuota note condivise'}
 dirty=1}
+const stp=(id,key,lo,hi,d)=>{$(id).onclick=()=>{const p=S.P[S.sel];p[key]=Math.max(lo,Math.min(hi,p[key]+d));save();ui()}};
+stp('#om','oct',-2,2,-1);stp('#op','oct',-2,2,1);stp('#pm','pit',-12,12,-1);stp('#pp2','pit',-12,12,1);
+$('#ov').onclick=()=>{S.P[S.sel].oct=0;save();ui()};$('#pv').onclick=()=>{S.P[S.sel].pit=0;save();ui()};
 $('#lm').onclick=()=>{const p=S.P[S.sel];p.len=Math.max(2,p.len-1);save();ui()};
 $('#lp').onclick=()=>{const p=S.P[S.sel];p.len=Math.min(16,p.len+1);save();ui()};
 $('#vc').onchange=e=>{S.P[S.sel].voice=+e.target.value;save()};
@@ -237,7 +247,7 @@ $('#bm').onclick=()=>{S.bpm=Math.max(40,S.bpm-4);save();ui()};
 $('#bp').onclick=()=>{S.bpm=Math.min(200,S.bpm+4);save();ui()};
 $('#sc').onclick=()=>{$('#sh').hidden=false};
 $('#sx').onclick=()=>{$('#sh').hidden=true};
-$('#dbg').onclick=()=>{$('#dbg').hidden=true};$('#pl').onclick=toggleAll;$('#pb2').onclick=()=>toggleK(S.sel);
+$('#dbg').onclick=()=>{$('#dbg').hidden=true};$('#pl').onclick=toggleAll;$('#pb2').onclick=()=>toggleK(S.sel);$('#mb2').onclick=()=>mutePK(S.sel);$('#mu').onclick=muteAll;
 new ResizeObserver(layout).observe(vp);
 layout();ui();icon();requestAnimationFrame(frame);
 </script>

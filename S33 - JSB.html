@@ -28,7 +28,7 @@ button.on{background:var(--on);color:var(--onf);border-color:#1D9E75}
 #vp{position:relative;flex:1;overflow:hidden;touch-action:none}
 #grid{position:absolute;top:0;left:0;bottom:0;display:grid;grid-template-rows:repeat(8,minmax(0,1fr));gap:2px}
 .c{border-radius:4px;background:var(--cd)}.c.rt{background:var(--rt)}
-.ph{position:absolute;top:0;bottom:0;pointer-events:none;border-radius:4px}
+.ph{position:absolute;top:0;bottom:0;left:0;width:3px;pointer-events:none;border-radius:2px;will-change:transform}
 #el,#er{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:4px;pointer-events:none}
 #el{left:3px}#er{right:3px}
 .ed{display:block;width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 2px var(--bg)}
@@ -38,15 +38,15 @@ button.on{background:var(--on);color:var(--onf);border-color:#1D9E75}
 .ch small{display:block;color:var(--f2);font-size:11px}
 .dot{width:14px;height:14px;border-radius:50%;flex:none}
 #pn{flex:1;display:flex;flex-direction:column;gap:2px;border-left:.5px solid var(--ln);padding-left:8px;overflow:hidden}
-.hd{display:flex;align-items:center;justify-content:space-between;min-height:34px}
+.hd{display:flex;align-items:center;justify-content:space-between;min-height:30px}
 #pd{display:flex;gap:6px}
-.dd{width:22px;height:22px;min-height:0;padding:0;border:0;border-radius:50%}
+.dd{width:20px;height:20px;min-height:0;padding:0;border:0;border-radius:50%}
 .dd.cur{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--fg)}
-#px{width:32px;padding:0;font-size:18px}
-.rw{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:34px;font-size:12px;color:var(--f2)}
+#px{width:30px;padding:0;font-size:18px}.ch2{flex:1;display:flex;gap:6px}.pb{width:34px;padding:0;display:flex;align-items:center;justify-content:center;flex:none}#hb{display:flex;gap:4px}.kb{flex:1;display:flex;flex-direction:column;align-items:center;touch-action:none;cursor:ns-resize}.kb small{font-size:11px;color:var(--f2);line-height:1.1}#kr{display:flex;gap:2px;padding:2px 0}.st button{height:28px;min-height:28px}
+.rw{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:32px;font-size:12px;color:var(--f2)}
 .st{display:flex;align-items:center;gap:4px;color:var(--fg)}.st button{width:30px;padding:0}.st b{min-width:20px;text-align:center;font-weight:500}
 .sg{display:flex;gap:2px}.sg button{min-width:26px;min-height:30px;padding:0}
-select{width:84px;min-height:30px}
+select{width:100px;min-height:30px}
 input[type=range]{width:84px}
 input[type=checkbox]{width:20px;height:20px;margin:0}
 #cl{min-height:28px;font-size:12px;margin-top:2px}
@@ -73,14 +73,14 @@ input[type=checkbox]{width:20px;height:20px;margin:0}
  <div id="R">
   <div id="ch"></div>
   <div id="pn" hidden>
-   <div class="hd"><div id="pd"></div><button id="px" aria-label="Chiudi pannello">×</button></div>
+   <div class="hd"><div id="pd"></div><div id="hb"><button id="pb2" class="pb" style="width:30px" aria-label="Play playhead"></button><button id="px" aria-label="Chiudi pannello">×</button></div></div>
    <div class="rw"><span>Lunghezza</span><div class="st"><button id="lm" aria-label="Meno">−</button><b id="lv"></b><button id="lp" aria-label="Più">+</button></div></div>
    <div class="rw"><span>Velocità</span><div class="sg" id="sg"></div></div>
    <div class="rw"><span>Direzione</span><div class="sg" id="dg"></div></div>
-   <div class="rw"><span>Voce</span><select id="vc"><option value="0">Pizzico</option><option value="1">Morbida</option><option value="2">Ottava giù</option></select></div>
-   <div class="rw"><span>Volume</span><input type="range" id="vl" min="0" max="100"></div>
+   <div class="rw"><span>Voce</span><select id="vc"></select></div>
+   <div id="kr"><div id="kv"></div><div id="kre"></div><div id="kd"></div></div>
    <div class="rw"><span>Mano propria</span><input type="checkbox" id="ow"></div>
-   <button id="cl" hidden>Svuota note</button>
+   <button id="cl">Svuota note</button>
   </div>
  </div>
  <div id="sh" hidden>
@@ -88,6 +88,7 @@ input[type=checkbox]{width:20px;height:20px;margin:0}
   <div id="tn"></div>
   <div id="sl"></div>
  </div>
+ <div id="dbg" hidden style="position:absolute;left:50%;bottom:6px;transform:translateX(-50%);z-index:8;background:var(--cd);border:.5px solid var(--ln);border-radius:8px;padding:6px 10px;font-size:12px;max-width:80%"></div>
  <div id="rot">Ruota il telefono in orizzontale per usare il sequencer.</div>
 </div>
 <script>
@@ -101,22 +102,65 @@ const Z=()=>Array.from({length:8},()=>Array(16).fill(0));
 const def=()=>{const sh=Z();[[1,7],[2,11],[3,1],[3,15],[4,4],[4,9],[5,0],[5,6],[5,12],[6,3],[6,10],[6,14],[7,0],[7,8]].forEach(([r,c])=>sh[r][c]=1);return{bpm:112,tn:0,sc:0,sh,P:[[16,1,0],[12,1,1],[8,.5,0],[5,1,2]].map(([len,sp,voice])=>({len,sp,dir:0,voice,vol:.8,own:0,init:0,ow:Z()}))}};
 let S=null;try{S=JSON.parse(localStorage.getItem('s4p'))}catch(e){}
 if(!S||!S.P||S.P.length!==4)S=def();
-S.sel=-1;
+S.sel=-1;S.P.forEach(p=>{if(p.rev==null)p.rev=.2;if(p.dly==null)p.dly=0});
 const save=()=>{try{localStorage.setItem('s4p',JSON.stringify(S))}catch(e){}};
-const pos=[0,0,0,0];
-let ctx,mst,playing=false,timer=0,vq=[],dirty=1,VIS=7,cw=40,off=0;
+const xs=[0,0,0,0],col=[0,0,0,0],cur=[null,null,null,null];let lastE='';
+let ctx,mst,playing=false,timer=0,vq=[],dirty=1,VIS=7,cw=40,off=0,t0=null,OUT,dIn,dl,rIn;const run=[0,0,0,0],bus=[],ds=[],rs=[];
+const ICP='<svg width="14" height="14" viewBox="0 0 18 18"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>',ICS='<svg width="14" height="14" viewBox="0 0 18 18"><rect x="3" y="3" width="12" height="12" rx="2" fill="currentColor"/></svg>';
 const H=[0,1,2,3].map(()=>({nt:0,i:0}));
 
-function ensure(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();mst=ctx.createDynamicsCompressor();const g=ctx.createGain();g.gain.value=.8;mst.connect(g);g.connect(ctx.destination)}if(ctx.state!=='running')ctx.resume()}
+function setSends(){S.P.forEach((p,k)=>{if(!bus[k])return;ds[k].gain.value=(p.dly||0)*.9;rs[k].gain.value=(p.rev||0)*1.2})}
+function fx(){const mk=()=>ctx.createGain();
+dIn=mk();dl=ctx.createDelay(2);const fb=mk(),lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3200;fb.gain.value=.42;dl.delayTime.value=45/S.bpm;
+dIn.connect(dl);dl.connect(lp);lp.connect(fb);fb.connect(dl);lp.connect(mst);
+rIn=mk();const cv=ctx.createConvolver(),n=Math.floor(ctx.sampleRate*2.2),ib=ctx.createBuffer(2,n,ctx.sampleRate),ro=mk();
+for(let c=0;c<2;c++){const a=ib.getChannelData(c);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*Math.pow(1-i/n,3)}
+cv.buffer=ib;ro.gain.value=.7;rIn.connect(cv);cv.connect(ro);ro.connect(mst);
+for(let k=0;k<4;k++){bus[k]=mk();ds[k]=mk();rs[k]=mk();bus[k].connect(mst);bus[k].connect(ds[k]);bus[k].connect(rs[k]);ds[k].connect(dIn);rs[k].connect(rIn)}
+setSends()}
+function dbg(m){const e=$('#dbg');e.textContent=m+' (tocca per chiudere)';e.hidden=false}
+function ensure(){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();ctx.onstatechange=()=>{if(ctx.state!=='running')dbg('Audio in stato: '+ctx.state)};mst=ctx.createDynamicsCompressor();const g=ctx.createGain();g.gain.value=.8;mst.connect(g);g.connect(ctx.destination);fx()}if(ctx.state!=='running'){const r=ctx.resume();if(r&&r.catch)r.catch(e=>dbg('Audio non avviabile: '+(e&&e.message||e)))}}
 const posOf=(p,i)=>{const n=p.len;if(p.dir===0)return i%n;if(p.dir===1)return n-1-i%n;if(p.dir===2){const q=Math.max(1,2*n-2),m=i%q;return m<n?m:q-m}return Math.floor(Math.random()*n)};
 function freq(r){const iv=SC[S.sc][2],d=7-r;return 440*Math.pow(2,(48+S.tn+12*Math.floor(d/iv.length)+iv[d%iv.length]-69)/12)}
-function tone(f,p,t){const o=ctx.createOscillator(),g=ctx.createGain(),v=.15*p.vol,dur=[.45,.95,.6][p.voice],att=[.004,.04,.006][p.voice];
+function basic(f,p,t,d){const o=ctx.createOscillator(),g=ctx.createGain(),v=.15*p.vol,a=[.004,.04,.006][p.voice];
 o.type=['triangle','sine','triangle'][p.voice];o.frequency.value=p.voice===2?f/2:f;
-g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+att);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-o.connect(g);g.connect(mst);o.start(t);o.stop(t+dur+.05)}
-function sched(){const now=ctx.currentTime,b=60/S.bpm/2;S.P.forEach((p,k)=>{const h=H[k],L=p.own?p.ow:S.sh;while(h.nt<now+.12){const c=posOf(p,h.i);for(let r=0;r<8;r++)if(L[r][c])tone(freq(r),p,h.nt);vq.push({t:h.nt,k,pos:c});h.i++;h.nt+=b/p.sp}})}
-function icon(){$('#pl').innerHTML=playing?'<svg width="18" height="18" viewBox="0 0 18 18"><rect x="3" y="2" width="4" height="14" rx="1" fill="currentColor"/><rect x="11" y="2" width="4" height="14" rx="1" fill="currentColor"/></svg>':'<svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>'}
-function toggle(){if(!playing){ensure();const t0=ctx.currentTime+.06;H.forEach(h=>{h.nt=t0;h.i=0});vq=[];timer=setInterval(sched,25);playing=true}else{clearInterval(timer);playing=false;vq=[]}icon();dirty=1}
+g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);
+let e;if(p.voice===0){e=t+Math.max(.45,d);g.gain.exponentialRampToValueAtTime(.0001,e)}else{const h=Math.max(d,.12);g.gain.setValueAtTime(v,t+h);e=t+h+.3;g.gain.exponentialRampToValueAtTime(.0001,e)}
+o.connect(g);g.connect(OUT);o.start(t);o.stop(e+.05)}
+const VN=['Pizzico','Morbida','Ottava giù','Pianoforte','Clavinet','Side stick','Shaker'];
+let nb=null;
+function noise(){if(!nb){nb=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate);const a=nb.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1}const s=ctx.createBufferSource();s.buffer=nb;return s}
+function piano(f,t,d,v){const g=ctx.createGain(),r=ctx.createGain(),lp=ctx.createBiquadFilter(),rt=t+Math.max(d,.15),tau=Math.min(1.4,.45+110/f);
+lp.type='lowpass';lp.frequency.setValueAtTime(Math.min(9000,f*14),t);lp.frequency.setTargetAtTime(f*2.5,t,.25);
+g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*1.1,t+.004);g.gain.setTargetAtTime(0,t+.004,tau);
+r.gain.setValueAtTime(1,rt);r.gain.setTargetAtTime(0,rt,.07);
+[['triangle',1,1],['triangle',1.0035,.5],['sine',2,.35],['sine',3,.15]].forEach(([ty,m,a])=>{const o=ctx.createOscillator(),q=ctx.createGain();o.type=ty;o.frequency.value=f*m;q.gain.value=a*.5;o.connect(q);q.connect(lp);o.start(t);o.stop(rt+.6)});
+lp.connect(g);g.connect(r);r.connect(OUT)}
+function clav(f,t,d,v){const g=ctx.createGain(),lp=ctx.createBiquadFilter(),e=t+Math.max(.28,Math.min(d,1.2)*.7);
+lp.type='lowpass';lp.Q.value=3;lp.frequency.setValueAtTime(Math.min(9000,f*16),t);lp.frequency.exponentialRampToValueAtTime(Math.max(300,f*3),t+.18);
+g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*1.2,t+.002);g.gain.exponentialRampToValueAtTime(.0001,e);
+[['sawtooth',1,1],['square',1,.5],['sawtooth',2,.25]].forEach(([ty,m,a])=>{const o=ctx.createOscillator(),q=ctx.createGain();o.type=ty;o.frequency.value=f*m;q.gain.value=a*.6;o.connect(q);q.connect(lp);o.start(t);o.stop(e+.05)});
+lp.connect(g);g.connect(OUT)}
+function stick(f,t,v){const cf=900+f*1.4,s=noise(),b=ctx.createBiquadFilter(),g=ctx.createGain(),o=ctx.createOscillator(),og=ctx.createGain();
+b.type='bandpass';b.frequency.value=cf;b.Q.value=4;
+g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*2.2,t+.001);g.gain.exponentialRampToValueAtTime(.0001,t+.05);
+s.connect(b);b.connect(g);g.connect(OUT);s.start(t,Math.random()*.5);s.stop(t+.06);
+o.type='sine';o.frequency.setValueAtTime(cf*.55,t);o.frequency.exponentialRampToValueAtTime(cf*.4,t+.04);
+og.gain.setValueAtTime(0,t);og.gain.linearRampToValueAtTime(v*.9,t+.001);og.gain.exponentialRampToValueAtTime(.0001,t+.05);
+o.connect(og);og.connect(OUT);o.start(t);o.stop(t+.06)}
+function shake(f,t,d,v){const len=Math.min(.07+d*.35,.4),s=noise(),h=ctx.createBiquadFilter(),b=ctx.createBiquadFilter(),g=ctx.createGain();
+h.type='highpass';h.frequency.value=4500;b.type='bandpass';b.frequency.value=6500+f*2;b.Q.value=.8;
+g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*1.1,t+Math.min(.02,len/3));g.gain.exponentialRampToValueAtTime(.0001,t+len);
+s.connect(h);h.connect(b);b.connect(g);g.connect(OUT);s.start(t,Math.random()*.5);s.stop(t+len+.02)}
+function tone(f,p,t,d){OUT=bus[S.P.indexOf(p)];const v=.15*p.vol,V=p.voice;if(V<3)return basic(f,p,t,d);if(V===3)return piano(f,t,d,v);if(V===4)return clav(f,t,d,v);if(V===5)return stick(f,t,v);return shake(f,t,d,v)}
+function sched(){const now=ctx.currentTime,b=60/S.bpm/2;dl.delayTime.setTargetAtTime(45/S.bpm,now,.05);S.P.forEach((p,k)=>{if(!run[k])return;const h=H[k],L=p.own?p.ow:S.sh;while(h.nt<now+.12){const c=(p.dir===3&&h.pend!=null&&h.pend<p.len)?h.pend:posOf(p,h.i),c2=posOf(p,h.i+1),dt=b/p.sp;h.pend=c2;for(let r=0;r<8;r++)if(L[r][c]>0)try{tone(freq(r),p,h.nt,L[r][c]*dt)}catch(err){dbg('Audio: '+(err&&err.message||err))};vq.push({t:h.nt,k,pos:c,d:p.dir===0?1:p.dir===1?-1:c2-c,w:p.dir<2,len:p.len,dt});h.i++;h.nt+=dt}})}
+const anyRun=()=>run.some(x=>x);
+function icon(){$('#pl').innerHTML=anyRun()?'<svg width="18" height="18" viewBox="0 0 18 18"><rect x="3" y="3" width="12" height="12" rx="2" fill="currentColor"/></svg>':'<svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 2.5v13l11-6.5z" fill="currentColor"/></svg>'}
+function after(){playing=anyRun();icon();ui()}
+function startK(k,z){ensure();const now=ctx.currentTime+.03,p=S.P[k],dt=60/S.bpm/2/p.sp,h=H[k];if(t0===null)t0=now+.03;const n=z?0:Math.max(0,Math.ceil((now-t0)/dt-1e-6));h.i=n;h.nt=t0+n*dt;h.pend=null;cur[k]=null;xs[k]=0;col[k]=-1;vq=vq.filter(e=>e.k!==k);run[k]=1;if(!timer)timer=setInterval(sched,25);after()}
+function stopK(k){run[k]=0;vq=vq.filter(e=>e.k!==k);cur[k]=null;xs[k]=0;col[k]=-1;if(!anyRun()){clearInterval(timer);timer=0;t0=null}after()}
+const toggleK=k=>run[k]?stopK(k):startK(k,false);
+function toggleAll(){if(anyRun()){for(let k=0;k<4;k++)if(run[k])stopK(k)}else{t0=null;for(let k=0;k<4;k++)startK(k,true)}}
 
 const grid=$('#grid'),vp=$('#vp'),mm=$('#mm'),win=$('#win'),EL=$('#el'),ER=$('#er');
 const cells=[];
@@ -124,27 +168,30 @@ for(let r=0;r<8;r++){cells[r]=[];for(let c=0;c<16;c++){const d=E('div','c',grid)
 const phs=PC.map(c=>{const d=E('div','ph',grid);d.style.background=c;return d});
 const ms=[];for(let c=0;c<16;c++){const s=E('div','ms');mm.insertBefore(s,win);ms.push(s)}
 function setOff(o){off=Math.max(0,Math.min(16-VIS,o));grid.style.transform='translateX('+(-off*cw)+'px)';win.style.left='calc('+off+'*100%/16)';dirty=1}
-function layout(){const w=vp.clientWidth;if(!w)return;VIS=Math.min(16,Math.max(6,Math.floor(w/34)));cw=w/VIS;grid.style.gridTemplateColumns='repeat(16,'+(cw-2)+'px)';grid.style.width=(16*cw)+'px';phs.forEach(p=>p.style.width=(cw-2)+'px');mm.style.visibility=VIS<16?'visible':'hidden';win.style.width='calc('+VIS+'*100%/16)';setOff(off)}
+function layout(){const w=vp.clientWidth;if(!w)return;VIS=Math.min(16,Math.max(6,Math.floor(w/34)));cw=w/VIS;grid.style.gridTemplateColumns='repeat(16,'+(cw-2)+'px)';grid.style.width=(16*cw)+'px';mm.style.visibility=VIS<16?'visible':'hidden';win.style.width='calc('+VIS+'*100%/16)';setOff(off)}
 const edot=k=>'<i class="ed" style="background:'+PC[k]+'"></i>';
+function cov(l){const m=Array.from({length:8},()=>Array(16).fill(null));for(let r=0;r<8;r++)for(let c=0;c<16;c++){const n=l[r][c];if(n>0){const e=Math.min(15,c+n-1);for(let j=c;j<=e;j++)m[r][j]={t:n===1?1:j===c?2:j===e?4:3,s:c,e}}}return m}
 function draw(){
-const sel=S.sel,sp=sel>=0?S.P[sel]:null,ov=sp&&sp.own,n=SC[S.sc][2].length;
-for(let r=0;r<8;r++){const rt=(7-r)%n===0;for(let c=0;c<16;c++){const d=cells[r][c];let bg='',op=1;
-if(ov){if(sp.ow[r][c]){bg=PC[sel];op=playing&&pos[sel]===c?1:.7}else if(S.sh[r][c]){bg='var(--nt)';op=.3}}
-else if(S.sh[r][c]){let h=-1;if(playing)for(let k=0;k<4;k++)if(!S.P[k].own&&pos[k]===c){h=k;break}bg=h>=0?PC[h]:'var(--nt)';op=h>=0?1:.8}
+const sel=S.sel,sp=sel>=0?S.P[sel]:null,ov=sp&&sp.own,n=SC[S.sc][2].length,A=cov(S.sh),B=ov?cov(sp.ow):null;
+for(let r=0;r<8;r++){const rt=(7-r)%n===0;for(let c=0;c<16;c++){const d=cells[r][c];let bg='',op=1,t=0;
+if(ov){const z=B[r][c];if(z){t=z.t;bg=PC[sel];op=run[sel]&&col[sel]>=z.s&&col[sel]<=z.e?1:.7}else if(A[r][c]){t=A[r][c].t;bg='var(--nt)';op=.3}}
+else{const z=A[r][c];if(z){t=z.t;let h=-1;for(let k=0;k<4;k++)if(!S.P[k].own&&run[k]&&col[k]>=z.s&&col[k]<=z.e){h=k;break}bg=h>=0?PC[h]:'var(--nt)';op=h>=0?1:.8}}
 if(sp&&c>=sp.len)op*=.4;
-d.className='c'+(rt?' rt':'');d.style.background=bg;d.style.opacity=op}}
-phs.forEach((p,k)=>{p.style.left=(pos[k]*cw)+'px';p.style.opacity=sel<0?.2:(k===sel?.3:.12)});
-for(let c=0;c<16;c++){let bg='var(--cd)',op=1;if(sp){if(c<sp.len){bg=PC[sel];op=pos[sel]===c?1:.45}}else{const k=pos.indexOf(c);if(k>-1)bg=PC[k]}ms[c].style.background=bg;ms[c].style.opacity=op}
-let l='',r2='';if(VIS<16)pos.forEach((p,k)=>{if(p<off)l+=edot(k);else if(p>=off+VIS)r2+=edot(k)});EL.innerHTML=l;ER.innerHTML=r2}
-function frame(){if(ctx&&playing){const now=ctx.currentTime,keep=[];for(const e of vq){if(e.t<=now){pos[e.k]=e.pos;dirty=1}else keep.push(e)}vq=keep}if(dirty){draw();dirty=0}requestAnimationFrame(frame)}
+d.className='c'+(rt?' rt':'');d.style.background=bg;d.style.opacity=op;d.style.marginLeft=t>=3?'-2px':'';d.style.borderRadius=t===2?'4px 0 0 4px':t===3?'0':t===4?'0 4px 4px 0':''}}
+phs.forEach((p,k)=>{p.style.opacity=!run[k]?.25:(sel<0||k===sel?1:.5)});
+for(let c=0;c<16;c++){let bg='var(--cd)',op=1;if(sp){if(c<sp.len){bg=PC[sel];op=run[sel]&&col[sel]===c?1:.45}}else{const k=col.indexOf(c);if(k>-1)bg=PC[k]}ms[c].style.background=bg;ms[c].style.opacity=op}
+}
+function moveBars(){let l='',r2='';phs.forEach((p,k)=>{p.style.transform='translateX('+(xs[k]*cw-1.5)+'px)';if(VIS<16&&run[k]){if(xs[k]<off)l+=edot(k);else if(xs[k]>=off+VIS)r2+=edot(k)}});const q=l+'|'+r2;if(q!==lastE){lastE=q;EL.innerHTML=l;ER.innerHTML=r2}}
+function frame(){if(ctx&&playing){const now=ctx.currentTime,keep=[];for(const e of vq){if(e.t<=now)cur[e.k]=e;else keep.push(e)}vq=keep;cur.forEach((e,k)=>{if(!e)return;const f=Math.min(1,Math.max(0,(now-e.t)/e.dt));let x=e.pos+.5+f*e.d;if(e.w)x=((x%e.len)+e.len)%e.len;xs[k]=x;const c=Math.floor(x);if(c!==col[k]){col[k]=c;dirty=1}})}moveBars();if(dirty){draw();dirty=0}requestAnimationFrame(frame)}
 
-let paint=null;
 const L=()=>{const p=S.sel>=0?S.P[S.sel]:null;return p&&p.own?p.ow:S.sh};
 const cellAt=(x,y)=>{const e=document.elementFromPoint(x,y);return e&&e.classList.contains('c')?e:null};
-const setC=e=>{if(!e)return;const l=L(),r=+e.dataset.r,c=+e.dataset.c;if(l[r][c]!==paint){l[r][c]=paint;dirty=1}};
-grid.onpointerdown=e=>{const t=cellAt(e.clientX,e.clientY);if(!t)return;paint=L()[+t.dataset.r][+t.dataset.c]?0:1;grid.setPointerCapture(e.pointerId);setC(t)};
-grid.onpointermove=e=>{if(paint!==null)setC(cellAt(e.clientX,e.clientY))};
-const endP=()=>{if(paint!==null){paint=null;save()}};
+const noteAt=(l,r,c)=>{for(let k=0;k<4;k++){const s=c-k;if(s>=0&&l[r][s]>k)return s}return -1};
+function put(l,r,c,n){n=Math.max(1,Math.min(4,16-c,n));for(let k=1;k<4;k++){const s=c-k;if(s>=0&&l[r][s]>k)l[r][s]=k}for(let j=c+1;j<c+n;j++)l[r][j]=0;l[r][c]=n;dirty=1}
+let gs=null;
+grid.onpointerdown=e=>{const t=cellAt(e.clientX,e.clientY);if(!t)return;const l=L(),r=+t.dataset.r,c=+t.dataset.c,s=noteAt(l,r,c);grid.setPointerCapture(e.pointerId);if(s>=0){gs={m:0};l[r][s]=0;dirty=1}else{gs={m:1,r,c};put(l,r,c,1)}};
+grid.onpointermove=e=>{if(!gs)return;const t=cellAt(e.clientX,e.clientY);if(!t)return;const l=L(),c=+t.dataset.c;if(gs.m)put(l,gs.r,gs.c,c<gs.c?1:c-gs.c+1);else{const r=+t.dataset.r,s=noteAt(l,r,c);if(s>=0){l[r][s]=0;dirty=1}}};
+const endP=()=>{if(gs){gs=null;save()}};
 grid.onpointerup=endP;grid.onpointercancel=endP;
 let mdrag=false;
 const mmMove=e=>{const b=mm.getBoundingClientRect();setOff(Math.round((e.clientX-b.left)/b.width*16-VIS/2))};
@@ -152,35 +199,45 @@ mm.onpointerdown=e=>{mdrag=true;mm.setPointerCapture(e.pointerId);mmMove(e)};
 mm.onpointermove=e=>{if(mdrag)mmMove(e)};
 mm.onpointerup=()=>{mdrag=false};
 
+VN.forEach((n,i)=>{const o=E('option','',$('#vc'),n);o.value=i});
 SPL.forEach((l,i)=>{const b=E('button','',$('#sg'),l);b.onclick=()=>{S.P[S.sel].sp=SPV[i];save();ui()}});
 DL.forEach((l,i)=>{const b=E('button','',$('#dg'),l);b.setAttribute('aria-label',DN[i]);b.onclick=()=>{S.P[S.sel].dir=i;save();ui()}});
 const tb=TN.map((n,i)=>{const b=E('button','',$('#tn'),n);b.onclick=()=>{S.tn=i;save();ui()};return b});
 const sb=SC.map((s,i)=>{const b=E('button','',$('#sl'),s[0]);b.onclick=()=>{S.sc=i;save();ui()};return b});
+const dgr=a=>{const r=a*Math.PI/180;return[20+14.5*Math.sin(r),20-14.5*Math.cos(r)]};
+function knob(id,label,key,after){const h=$(id);h.className='kb';h.innerHTML='<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="var(--cd)" stroke="var(--ln)"/><path fill="none" stroke-width="3" stroke-linecap="round"/><line x1="20" y1="20" x2="20" y2="9" stroke-width="2.5" stroke-linecap="round" stroke="var(--f2)"/></svg><small></small>';
+const ar=h.querySelector('path'),ln=h.querySelector('line'),tx=h.querySelector('small');let y0=0,v0=0,on=0;
+const o={upd(){const p=S.P[S.sel];if(!p)return;const v=p[key],a=-135+270*v,[x0,yb]=dgr(-135),[x1,y1]=dgr(a);ar.setAttribute('d','M'+x0+' '+yb+' A14.5 14.5 0 '+(a+135>180?1:0)+' 1 '+x1+' '+y1);ar.setAttribute('stroke',PC[S.sel]);ln.setAttribute('transform','rotate('+a+' 20 20)');tx.textContent=label+' '+Math.round(v*100)}};
+h.onpointerdown=e=>{const p=S.P[S.sel];y0=e.clientY;v0=p[key];on=1;h.setPointerCapture(e.pointerId)};
+h.onpointermove=e=>{if(!on)return;const p=S.P[S.sel];p[key]=Math.max(0,Math.min(1,v0+(y0-e.clientY)/110));o.upd();after()};
+const end=()=>{if(on){on=0;save()}};h.onpointerup=end;h.onpointercancel=end;
+return o}
+const KN=[knob('#kv','Vol','vol',()=>{}),knob('#kre','Rev','rev',setSends),knob('#kd','Dly','dly',setSends)];
 function ui(){
 const p=S.sel>=0?S.P[S.sel]:null;
 $('#pn').hidden=!p;$('#ch').hidden=!!p;
 $('#bv').textContent=S.bpm;$('#s1').textContent=TN[S.tn];$('#s2').textContent=SC[S.sc][1];
 tb.forEach((b,i)=>b.classList.toggle('on',i===S.tn));sb.forEach((b,i)=>b.classList.toggle('on',i===S.sc));
 const ch=$('#ch');ch.innerHTML='';
-S.P.forEach((q,k)=>{const b=E('button','ch',ch,'<span class="dot" style="background:'+PC[k]+'"></span><span>P'+(k+1)+'<small>'+q.len+' · ×'+SPL[SPV.indexOf(q.sp)]+(q.own?' · mano':'')+'</small></span>');b.onclick=()=>{S.sel=k;ui()}});
+S.P.forEach((q,k)=>{const w=E('div','ch2',ch);const b=E('button','ch',w,'<span class="dot" style="background:'+PC[k]+'"></span><span>P'+(k+1)+'<small>'+q.len+' · ×'+SPL[SPV.indexOf(q.sp)]+(q.own?' · mano':'')+'</small></span>');b.onclick=()=>{S.sel=k;ui()};const pb=E('button','pb',w,run[k]?ICS:ICP);pb.setAttribute('aria-label','Play playhead '+(k+1));if(run[k]){pb.style.background=PC[k];pb.style.color='#fff';pb.style.borderColor=PC[k]}pb.onclick=()=>toggleK(k)});
 if(p){const pd=$('#pd');pd.innerHTML='';PC.forEach((c,k)=>{const b=E('button','dd',pd);b.setAttribute('aria-label','Playhead '+(k+1));b.style.background=c;if(k===S.sel)b.classList.add('cur');b.onclick=()=>{S.sel=k;ui()}});
-$('#lv').textContent=p.len;
+$('#lv').textContent=p.len;const q2=$('#pb2');q2.innerHTML=run[S.sel]?ICS:ICP;q2.style.background=run[S.sel]?PC[S.sel]:'';q2.style.color=run[S.sel]?'#fff':'';q2.style.borderColor=run[S.sel]?PC[S.sel]:'';
 $('#sg').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',SPV[i]===p.sp));
 $('#dg').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===p.dir));
-$('#vc').value=p.voice;$('#vl').value=Math.round(p.vol*100);$('#ow').checked=!!p.own;$('#cl').hidden=!p.own}
+$('#vc').value=p.voice;KN.forEach(k=>k.upd());$('#ow').checked=!!p.own;clArm=0;clearTimeout(clT);$('#cl').textContent=p.own?'Svuota note':'Svuota note condivise'}
 dirty=1}
 $('#lm').onclick=()=>{const p=S.P[S.sel];p.len=Math.max(2,p.len-1);save();ui()};
 $('#lp').onclick=()=>{const p=S.P[S.sel];p.len=Math.min(16,p.len+1);save();ui()};
 $('#vc').onchange=e=>{S.P[S.sel].voice=+e.target.value;save()};
-$('#vl').oninput=e=>{S.P[S.sel].vol=e.target.value/100;save()};
 $('#ow').onchange=e=>{const p=S.P[S.sel];p.own=e.target.checked?1:0;if(p.own&&!p.init){p.ow=S.sh.map(r=>r.slice());p.init=1}save();ui()};
-$('#cl').onclick=()=>{S.P[S.sel].ow=Z();save();dirty=1};
+let clArm=0,clT=0;
+$('#cl').onclick=()=>{const p=S.P[S.sel];if(!p.own&&!clArm){clArm=1;$('#cl').textContent='Tocca per confermare';clT=setTimeout(()=>{clArm=0;$('#cl').textContent='Svuota note condivise'},3000);return}clearTimeout(clT);clArm=0;L().forEach(r=>r.fill(0));$('#cl').textContent=p.own?'Svuota note':'Svuota note condivise';save();dirty=1};
 $('#px').onclick=()=>{S.sel=-1;ui()};
 $('#bm').onclick=()=>{S.bpm=Math.max(40,S.bpm-4);save();ui()};
 $('#bp').onclick=()=>{S.bpm=Math.min(200,S.bpm+4);save();ui()};
 $('#sc').onclick=()=>{$('#sh').hidden=false};
 $('#sx').onclick=()=>{$('#sh').hidden=true};
-$('#pl').onclick=toggle;
+$('#dbg').onclick=()=>{$('#dbg').hidden=true};$('#pl').onclick=toggleAll;$('#pb2').onclick=()=>toggleK(S.sel);
 new ResizeObserver(layout).observe(vp);
 layout();ui();icon();requestAnimationFrame(frame);
 </script>

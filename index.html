@@ -22,10 +22,10 @@ button.on{background:var(--on);color:var(--onf);border-color:#1D9E75}
 .bb div{display:flex;gap:2px}.bb button{min-width:26px;padding:0}
 #sc{width:56px;height:48px;padding:0;line-height:1.15}#sc b{font-size:15px;font-weight:500;display:block}#sc small{font-size:11px;color:var(--f2)}
 #M{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
-#mm{position:relative;height:12px;display:grid;grid-template-columns:repeat(16,1fr);gap:2px;flex:none;touch-action:none}
+#mm{position:relative;height:12px;display:grid;grid-template-columns:repeat(16,1fr);gap:2px;flex:none;touch-action:none;margin-left:40px}
 .ms{border-radius:3px;background:var(--cd)}
 #win{position:absolute;top:-2px;bottom:-2px;left:0;border:2px solid var(--f2);border-radius:5px;pointer-events:none}
-#vp{position:relative;flex:1;overflow:hidden;touch-action:none}
+#vw{flex:1;display:flex;gap:4px;min-height:0}#vp{position:relative;flex:1;min-width:0;overflow:hidden;touch-action:none}#nl{width:36px;flex:none;display:grid;grid-template-rows:repeat(8,minmax(0,1fr));gap:2px}.nr{display:flex;align-items:center;justify-content:flex-end;font-size:11px;color:var(--f2);white-space:nowrap}.nr.rt{color:var(--fg);font-weight:500}
 #grid{position:absolute;top:0;left:0;bottom:0;display:grid;grid-template-rows:repeat(8,minmax(0,1fr));gap:2px}
 .c{border-radius:4px;background:var(--cd)}.c.rt{background:var(--rt)}
 .ph{position:absolute;top:0;bottom:0;left:0;width:3px;pointer-events:none;border-radius:2px;will-change:transform}
@@ -68,7 +68,7 @@ input[type=checkbox]{width:20px;height:20px;margin:0}
  </div>
  <div id="M">
   <div id="mm"><div id="win"></div></div>
-  <div id="vp"><div id="grid"></div><div id="el"></div><div id="er"></div></div>
+  <div id="vw"><div id="nl"></div><div id="vp"><div id="grid"></div><div id="el"></div><div id="er"></div></div></div>
  </div>
  <div id="R">
   <div id="ch"></div>
@@ -171,6 +171,7 @@ function toggleAll(){if(anyRun()){for(let k=0;k<4;k++)if(run[k])stopK(k)}else{t0
 const grid=$('#grid'),vp=$('#vp'),mm=$('#mm'),win=$('#win'),EL=$('#el'),ER=$('#er');
 const cells=[];
 for(let r=0;r<8;r++){cells[r]=[];for(let c=0;c<16;c++){const d=E('div','c',grid);d.dataset.r=r;d.dataset.c=c;cells[r][c]=d}}
+const nls=[];for(let r=0;r<8;r++)nls.push(E('div','nr',$('#nl')));let lk='';
 const phs=PC.map(c=>{const d=E('div','ph',grid);d.style.background=c;return d});
 const ms=[];for(let c=0;c<16;c++){const s=E('div','ms');mm.insertBefore(s,win);ms.push(s)}
 function setOff(o){off=Math.max(0,Math.min(16-VIS,o));grid.style.transform='translateX('+(-off*cw)+'px)';win.style.left='calc('+off+'*100%/16)';dirty=1}
@@ -179,6 +180,7 @@ const edot=k=>'<i class="ed" style="background:'+PC[k]+'"></i>';
 function cov(l){const m=Array.from({length:8},()=>Array(16).fill(null));for(let r=0;r<8;r++)for(let c=0;c<16;c++){const n=l[r][c];if(n>0){const e=Math.min(15,c+n-1);for(let j=c;j<=e;j++)m[r][j]={t:n===1?1:j===c?2:j===e?4:3,s:c,e}}}return m}
 function draw(){
 const sel=S.sel,sp=sel>=0?S.P[sel]:null,ov=sp&&sp.own,n=SC[S.sc][2].length,A=cov(S.sh),B=ov?cov(sp.ow):null;
+const lkn=S.tn+'|'+S.sc+'|'+(sp?sp.oct+','+sp.pit:'');if(lkn!==lk){lk=lkn;const iv=SC[S.sc][2],sh=sp?12*(sp.oct||0)+(sp.pit||0):0;nls.forEach((e,r)=>{const d=7-r,m=48+S.tn+12*Math.floor(d/n)+iv[d%n]+sh;e.textContent=TN[((m%12)+12)%12]+(Math.floor(m/12)-1);e.className='nr'+(d%n===0?' rt':'')})}
 for(let r=0;r<8;r++){const rt=(7-r)%n===0;for(let c=0;c<16;c++){const d=cells[r][c];let bg='',op=1,t=0;
 if(ov){const z=B[r][c];if(z){t=z.t;bg=PC[sel];op=run[sel]&&col[sel]>=z.s&&col[sel]<=z.e?1:.7}else if(A[r][c]){t=A[r][c].t;bg='var(--nt)';op=.3}}
 else{const z=A[r][c];if(z){t=z.t;let h=-1;for(let k=0;k<4;k++)if(!S.P[k].own&&run[k]&&col[k]>=z.s&&col[k]<=z.e){h=k;break}bg=h>=0?PC[h]:'var(--nt)';op=h>=0?1:.8}}
